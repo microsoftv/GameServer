@@ -32,6 +32,7 @@ namespace GameServerCore.Domain.GameObjects
         void AddBuff(IBuff b);
         void ApplyCrowdControl(ICrowdControl cc);
         void RemoveCrowdControl(ICrowdControl cc);
+        void ClearAllCrowdControl();
         void SetDashingState(bool state);
         void DashToTarget(ITarget t, float dashSpeed, float followTargetMaxDistance, float backDistance, float travelTime);
         Dictionary<string, IBuff> GetBuffs();

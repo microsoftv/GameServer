@@ -181,6 +181,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chatbox\Commands\HealthRegenCommand.cs" />
+    <Compile Include="Chatbox\Commands\LogCoordsCommand.cs" />
+    <Compile Include="Chatbox\Commands\ManaRegenCommand.cs" />
     <Compile Include="Chatbox\DebugMsgType.cs" />
     <Compile Include="Content\NavGrid.cs" />
     <Compile Include="API\ApiFunctionManager.cs" />
@@ -315,6 +318,7 @@
     <Compile Include="Scripting\CSharp\GameScriptTimer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripting\CSharp\Helper.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="ServerContext.cs" />
     <Compile Include="ServerLibDefiningAssembly.cs" />

@@ -65,6 +65,14 @@ namespace LeagueSandbox.GameServer.API
             return newTimer;
         }
 
+        public static bool RemoveTimer(GameScriptTimer timer)
+        {
+            var newTimer = timer;
+            _game.RemoveGameScriptTimer(newTimer);
+
+            return true;
+        }
+
         public static Buff AddBuffHudVisual(string buffName, float duration, byte stacks, BuffType buffType, IObjAiBase onto, float removeAfter = -1.0f)
         {
             return AddBuffHudVisual(buffName, duration, stacks, buffType, onto, onto, removeAfter);

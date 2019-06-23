@@ -12,7 +12,9 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
         private readonly IPlayerManager _playerManager;
 
         public override string Command => "spawn";
-        public override string Syntax => $"{Command} minionsblue minionspurple";
+        public override string Syntax => $"{Command} minionsblue minionspurple pauseAI unpauseAI";
+
+        private bool IsPaused = true;
 
         public SpawnCommand(ChatCommandManager chatCommandManager, Game game)
             : base(chatCommandManager, game)
@@ -40,6 +42,14 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
 
                 SpawnMinionsForTeam(team, userId);
             }
+            else if (split[1].StartsWith("pause"))
+            {
+                IsPaused = true;
+            }
+            else if (split[1].StartsWith("unpause"))
+            {
+                IsPaused = false;
+            }
         }
 
         public void SpawnMinionsForTeam(TeamId team, int userId)
@@ -65,7 +75,7 @@ namespace LeagueSandbox.GameServer.Chatbox.Commands
             foreach (var minion in minions)
             {
                 minion.SetPosition(champion.X + random.Next(-X, X), champion.Y + random.Next(-X, X));
-                minion.PauseAi(true);
+                minion.PauseAi(IsPaused);
                 minion.SetWaypoints(
                     new List<Vector2> {new Vector2(minion.X, minion.Y), new Vector2(minion.X, minion.Y)});
                 minion.SetVisibleByTeam(team, true);
