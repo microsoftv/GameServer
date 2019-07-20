@@ -439,7 +439,7 @@ namespace PacketDefinitions420
 
         public void NotifyModifyShield(IAttackableUnit unit, float amount, bool IsPhysical, bool IsMagical, bool StopShieldFade)
         {
-            var mods = new LeaguePackets.Game.ModifyShield();
+            var mods = new ModifyShield();
             mods.SenderNetID = unit.NetId;
             mods.Physical = IsPhysical;
             mods.Magical = IsMagical;
@@ -482,6 +482,19 @@ namespace PacketDefinitions420
         {
             var sp = new SpawnParticle(_navGrid, particle);
             _packetHandlerManager.BroadcastPacket(sp, Channel.CHL_S2C);
+        }
+
+        public void NotifyInstantStopAttack(IAttackableUnit attacker, bool isSummonerSpell, uint missileNetID = 0)
+        {
+            var stopAttack = new NPC_InstantStop_Attack();
+            stopAttack.SenderNetID = attacker.NetId;
+            stopAttack.MissileNetID = missileNetID; //TODO: Fix MissileNetID, currently it only works when it is 0
+            stopAttack.KeepAnimating = false;
+            stopAttack.DestroyMissile = true;
+            stopAttack.OverrideVisibility = true;
+            stopAttack.IsSummonerSpell = isSummonerSpell;
+            stopAttack.ForceDoClient = false;
+            _packetHandlerManager.BroadcastPacket(stopAttack.GetBytes(), Channel.CHL_S2C);
         }
 
         public void NotifyParticleDestroy(IParticle particle)
@@ -577,12 +590,6 @@ namespace PacketDefinitions420
         {
             var xp = new AddXp(champion, experience);
             _packetHandlerManager.BroadcastPacket(xp, Channel.CHL_S2C);
-        }
-
-        public void NotifyStopAutoAttack(IAttackableUnit attacker)
-        {
-            var saa = new StopAutoAttack(attacker);
-            _packetHandlerManager.BroadcastPacket(saa, Channel.CHL_S2C);
         }
 
         public void NotifyDebugMessage(string htmlDebugMessage)
