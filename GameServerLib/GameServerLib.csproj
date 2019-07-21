@@ -181,6 +181,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chatbox\Commands\AttackSpeedCommand.cs" />
     <Compile Include="Chatbox\Commands\HealthRegenCommand.cs" />
     <Compile Include="Chatbox\Commands\LogCoordsCommand.cs" />
     <Compile Include="Chatbox\Commands\ManaRegenCommand.cs" />

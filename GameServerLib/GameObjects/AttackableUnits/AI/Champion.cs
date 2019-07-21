@@ -178,7 +178,6 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
         {
             var config = _game.Config;
             var playerIndex = GetPlayerIndex();
-            var playerTeam = "";
             var teamSize = GetTeamSize();
 
             if (teamSize > 6) //???
@@ -188,8 +187,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
             if (config.Players.ContainsKey(playerIndex))
             {
-                var p = config.Players[playerIndex];
-                playerTeam = p.Team;
+                _ = config.Players[playerIndex];
             }
 
             var spawnsByTeam = new Dictionary<TeamId, Dictionary<int, PlayerSpawns>>
@@ -209,7 +207,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
             if (config.Players.ContainsKey(playerIndex))
             {
-                var p = config.Players[playerIndex];
+                _ = config.Players[playerIndex];
             }
 
             var coords = new Vector2
@@ -367,7 +365,7 @@ namespace LeagueSandbox.GameServer.GameObjects.AttackableUnits.AI
 
         public int GetChampionHash()
         {
-            var szSkin = "";
+            string szSkin;
 
             if (Skin < 10)
             {
