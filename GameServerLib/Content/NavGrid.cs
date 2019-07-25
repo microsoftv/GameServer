@@ -343,9 +343,27 @@ namespace LeagueSandbox.GameServer.Content
             return cell != null && !cell.HasFlag(this, NavigationGridCellFlags.NOT_PASSABLE);
         }
 
+        public bool IsSeeThrough(Vector2 coords)
+        {
+            var vector = TranslateToNavGrid(new Vector<float> { X = coords.X, Y = coords.Y });
+            var cell = GetCell((short)vector.X, (short)vector.Y);
+            
+            return cell != null && cell.HasFlag(this, NavigationGridCellFlags.SEE_THROUGH);
+        }
+
         public bool IsWalkable(float x, float y)
         {
             return IsWalkable(new Vector2(x, y));
+        }
+
+        public bool IsSeeThrough(float x, float y)
+        {
+            return IsSeeThrough(new Vector2(x, y));
+        }
+
+        public bool IsBrush(float x, float y)
+        {
+            return IsBrush(new Vector2(x, y));
         }
 
         public bool IsBrush(Vector2 coords)
@@ -384,7 +402,7 @@ namespace LeagueSandbox.GameServer.Content
             return (float)Math.Sqrt(CastRaySqr(origin, destination, inverseRay));
         }
 
-        public float CastRaySqr(Vector2 origin, Vector2 destination, bool inverseRay = false)
+        public float CastRaySqr(Vector2 origin, Vector2 destination, bool checkWalkable = false)
         {
             var x1 = origin.X;
             var y1 = origin.Y;
@@ -396,21 +414,21 @@ namespace LeagueSandbox.GameServer.Content
                 return 0.0f;
             }
 
-            var b = x2 - x1;
-            var h = y2 - y1;
-            var l = Math.Abs(b);
-            if (Math.Abs(h) > l)
+            var distx = x2 - x1;
+            var disty = y2 - y1;
+            var greatestdist = Math.Abs(distx);
+            if (Math.Abs(disty) > greatestdist)
             {
-                l = Math.Abs(h);
+                greatestdist = Math.Abs(disty);
             }
 
-            var il = (int)l;
-            var dx = b / l;
-            var dy = h / l;
+            var il = (int)greatestdist;
+            var dx = distx / greatestdist;
+            var dy = disty / greatestdist;
             int i;
             for (i = 0; i <= il; i++)
             {
-                if (IsWalkable(x1, y1) == inverseRay)
+                if (IsWalkable(x1, y1) == checkWalkable && IsSeeThrough(x1, y1) == checkWalkable)
                 {
                     break;
                 }
@@ -423,7 +441,7 @@ namespace LeagueSandbox.GameServer.Content
                 y1 += dy;
             }
 
-            if (i == il)
+            if (i == il || (x1 == origin.X && y1 == origin.Y))
             {
                 return (new Vector2(x2, y2) - origin).SqrLength();
             }
@@ -443,12 +461,12 @@ namespace LeagueSandbox.GameServer.Content
 
         public bool IsAnythingBetween(Vector2 a, Vector2 b)
         {
-            return CastRaySqr(a, b) <= (b - a).SqrLength();
+            return CastRaySqr(a, b) < (b - a).SqrLength();
         }
 
         public bool IsAnythingBetween(IGameObject a, IGameObject b)
         {
-            return CastRaySqr(a.GetPosition(), b.GetPosition()) <= (b.GetPosition() - a.GetPosition()).SqrLength();
+            return CastRaySqr(a.GetPosition(), b.GetPosition()) < (b.GetPosition() - a.GetPosition()).SqrLength();
         }
 
         public Vector2 GetClosestTerrainExit(Vector2 location)

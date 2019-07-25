@@ -746,28 +746,6 @@ namespace PacketDefinitions420
             }
         }
 
-        /*public void NotifyEnterVision(IGameObject o, TeamId team)
-        {
-            switch (o)
-            {
-                case IMinion m:
-                {
-                    var eva = new EnterVisionAgain(_navGrid, m);
-                    _packetHandlerManager.BroadcastPacketTeam(team, eva, Channel.CHL_S2C);
-                    NotifyEnterLocalVisibilityClient(m);
-                    return;
-                }
-                // TODO: Fix bug where enemy champion is not visible to user when vision is acquired until the enemy champion moves
-                case IChampion c:
-                {
-                    var eva = new EnterVisionAgain(_navGrid, c);
-                    _packetHandlerManager.BroadcastPacketTeam(team, eva, Channel.CHL_S2C);
-                    NotifyEnterLocalVisibilityClient(c);
-                    break;
-                }
-            }
-        }*/
-
         public void NotifyEnterVisibilityClient(IAttackableUnit u, TeamId team, int userId = 0)
         {
             var enterVis = new OnEnterVisiblityClient(); // TYPO >:(

@@ -28,6 +28,8 @@ namespace GameServerCore.Content
         float GetHeightAtLocation(float x, float y);
         bool IsWalkable(Vector2 coords);
         bool IsWalkable(float x, float y);
+        bool IsSeeThrough(Vector2 coords);
+        bool IsSeeThrough(float x, float y);
         Vector2 GetSize();
         bool IsAnythingBetween(IGameObject a, IGameObject b);
         Vector2 GetClosestTerrainExit(Vector2 location);
