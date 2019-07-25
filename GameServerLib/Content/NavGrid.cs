@@ -56,7 +56,7 @@ namespace LeagueSandbox.GameServer.Content
             var vectorTo = TranslateToNavGrid(new Vector<float> { X = to.X, Y = to.Y });
             var cellTo = GetCell((short)vectorTo.X, (short)vectorTo.Y);
 
-            if(cellFrom != null && cellTo != null)
+            if (cellFrom != null && cellTo != null)
             {
                 var path = _grid.GetPath(new Position(cellFrom.X, cellFrom.Y), new Position(cellTo.X, cellTo.Y));
                 if (path != null)
@@ -347,7 +347,6 @@ namespace LeagueSandbox.GameServer.Content
         {
             var vector = TranslateToNavGrid(new Vector<float> { X = coords.X, Y = coords.Y });
             var cell = GetCell((short)vector.X, (short)vector.Y);
-            
             return cell != null && cell.HasFlag(this, NavigationGridCellFlags.SEE_THROUGH);
         }
 
@@ -377,6 +376,7 @@ namespace LeagueSandbox.GameServer.Content
         {
             var vector = TranslateToNavGrid(new Vector<float> { X = coords.X, Y = coords.Y });
             var cell = GetCell((short)vector.X, (short)vector.Y);
+
             return cell != null && cell.HasFlag(this, NavigationGridCellFlags.HAS_GLOBAL_VISION);
         }
 
@@ -426,17 +426,16 @@ namespace LeagueSandbox.GameServer.Content
             var dx = distx / greatestdist;
             var dy = disty / greatestdist;
             int i;
-            for (i = 0; i <= il; i++)
+            for (i = 0; i < il; i++)
             {
+                //TODO: Implement bush logic (preferably near here)
                 if (IsWalkable(x1, y1) == checkWalkable && IsSeeThrough(x1, y1) == checkWalkable)
                 {
                     break;
                 }
 
-                // Inverse = report on walkable
-                // Normal = report on terrain
-                // so break when isWalkable == true and inverse == true
-                // Break when isWalkable == false and inverse == false
+                // if checkWalkable == true, stop incrementing when (x1, x2) is a see-able position
+                // if checkWalkable == false, stop incrementing when (x1, x2) is a non-see-able position
                 x1 += dx;
                 y1 += dy;
             }
